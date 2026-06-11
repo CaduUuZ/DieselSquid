@@ -31,6 +31,9 @@ class Veiculo(Base):
     # Lado N da relação: acessa o cliente dono deste veículo
     cliente: Mapped["Cliente"] = relationship("Cliente", back_populates="veiculos")
 
+    # Lado 1 da relação com ordens de serviço
+    ordens: Mapped[list["OrdemServico"]] = relationship("OrdemServico", back_populates="veiculo")
+
 
 # Importado aqui para evitar circular import — o Python resolve na ordem de execução
 from app.models.cliente import Cliente  # noqa: E402

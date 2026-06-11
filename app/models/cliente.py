@@ -36,3 +36,6 @@ class Cliente(Base):
 
     # Lado 1 da relação: lista de veículos deste cliente
     veiculos: Mapped[list["Veiculo"]] = relationship("Veiculo", back_populates="cliente", cascade="all, delete-orphan")
+
+    # Lado 1 da relação com ordens de serviço
+    ordens: Mapped[list["OrdemServico"]] = relationship("OrdemServico", back_populates="cliente")

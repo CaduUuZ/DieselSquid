@@ -13,7 +13,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import engine, Base
-from app.routers import clientes, veiculos
+from app.routers import clientes, veiculos, ordens_servico
 
 # Cria as tabelas no banco se não existirem
 # Em produção, substitua por migrations Alembic (como o 'prisma migrate deploy')
@@ -35,6 +35,7 @@ app.add_middleware(
 
 app.include_router(clientes.router, prefix="/api")
 app.include_router(veiculos.router, prefix="/api")
+app.include_router(ordens_servico.router, prefix="/api")
 
 @app.get("/")
 def health_check():

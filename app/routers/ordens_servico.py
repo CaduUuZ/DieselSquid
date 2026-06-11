@@ -99,6 +99,11 @@ def mudar_status(os_id: int, dados: OSAtualizarStatus, db: Session = Depends(get
     if dados.status == StatusOS.CONCLUIDA:
         os.data_conclusao = dados.data_conclusao or datetime.now(timezone.utc)
 
+    if dados.status == StatusOS.CANCELADA:
+        # Devolve todas as peças ao estoque ao cancelar
+        for item in os.itens:
+            item.peca.estoque_atual += item.quantidade
+
     db.commit()
     db.refresh(os)
     return os

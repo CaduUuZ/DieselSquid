@@ -61,6 +61,15 @@ class OrdemServico(Base):
 
     veiculo: Mapped["Veiculo"] = relationship("Veiculo", back_populates="ordens")
     cliente: Mapped["Cliente"] = relationship("Cliente", back_populates="ordens")
+    itens: Mapped[list["ItemOS"]] = relationship("ItemOS", back_populates="os", cascade="all, delete-orphan")
+
+    @property
+    def valor_pecas(self) -> float:
+        return sum(item.subtotal for item in self.itens)
+
+    @property
+    def valor_total(self) -> float:
+        return float(self.valor_mao_obra) + self.valor_pecas
 
 
 from app.models.veiculo import Veiculo  # noqa: E402

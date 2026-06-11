@@ -5,7 +5,7 @@ Novidade: campo 'status' tipado com o Enum — o Pydantic valida
 automaticamente que o valor enviado é um dos permitidos.
 """
 from datetime import datetime
-from pydantic import BaseModel
+from pydantic import BaseModel, computed_field
 from app.models.ordem_servico import StatusOS
 
 
@@ -46,6 +46,16 @@ class OSAtualizarStatus(BaseModel):
     data_conclusao: datetime | None = None
 
 
+class ItemOSResumo(BaseModel):
+    id: int
+    peca_id: int
+    quantidade: int
+    preco_unitario: float
+    subtotal: float
+
+    model_config = {"from_attributes": True}
+
+
 class OSOut(BaseModel):
     id: int
     status: StatusOS
@@ -53,11 +63,14 @@ class OSOut(BaseModel):
     diagnostico: str | None
     km_entrada: int
     valor_mao_obra: float
+    valor_pecas: float
+    valor_total: float
     data_previsao: datetime | None
     data_conclusao: datetime | None
     created_at: datetime
     updated_at: datetime
     veiculo: VeiculoResumo
     cliente: ClienteResumo
+    itens: list[ItemOSResumo] = []
 
     model_config = {"from_attributes": True}
